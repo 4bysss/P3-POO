@@ -1,6 +1,19 @@
+#ifndef __50CENTS__
+#define __50CENTS__
+#include"usuario.hpp"
+#include<set>
+#include<map>
+#include<unordered_set>
+#include<unordered_map>
+#include"articulo.hpp"
+#include"fecha.hpp"
+#include"cadena.hpp"
+
+class Usuario;
+class Numero;
 class Tarjeta{
 	public:
-		static enum Tipo{Otro,VISA,Mastercard,Maestro,JCB,AmericanExpress};
+		enum Tipo{Otro,VISA,Mastercard,Maestro,JCB,AmericanExpress};
 		Tarjeta(int num,Usuario&,Fecha&);
 		Tipo& tipo()const;
 		const Numero& numero()const { return num;};
@@ -14,7 +27,7 @@ class Tarjeta{
 		class Caducada{
 			public:
 				
-				Caducada(Fecha&fech = cadu):cuand(fech);
+				Caducada(Fecha&fech):cuand(fech){};
 				Fecha& cuando();
 			private:
 				Fecha& cuand;
@@ -22,7 +35,7 @@ class Tarjeta{
 		//Clase excepcion para tarjetas duplicadas
 		class Num_duplicado{
 			public:
-				Num_duplicado(Numero& n):dup(n);
+				Num_duplicado(Numero& n):dup(n){};
 				Numero&que();
 			private:
 				Numero&dup;
@@ -31,7 +44,7 @@ class Tarjeta{
 
 	private:
 		const Numero& num;
-		Usuario* titu;
+		const Usuario& titu;
 		const Fecha& cadu;
 		bool acti;
 };
@@ -40,7 +53,8 @@ class Tarjeta{
 
 class Numero{
 	public:
-		static enum Razon{LONGITUD,DIGITOS,NO_VALIDO};
+		explicit Numero(Cadena&);
+		enum Razon{LONGITUD,DIGITOS,NO_VALIDO};
 		operator const char*() const;
 		class Incorrecto{
 			public:
@@ -48,6 +62,7 @@ class Numero{
 				Numero::Razon& razon();
 			private:
 				Numero::Razon raz;
+		};
 	private:
 		Cadena& troq;
 };
@@ -60,3 +75,4 @@ bool operator<(const Numero&,const Numero&);
 //Metodos externos de Tarjeta 
 bool operator<(const Tarjeta&,const Tarjeta&);
 std::ostream& operator<<(std::ostream&,Tarjeta&);
+#endif

@@ -1,32 +1,52 @@
+#ifndef __USER__
+#define __USER__
+#include<set>
+#include<map>
+#include<unordered_set>
+#include<unordered_map>
+#include<unistd.h>
+#include"articulo.hpp"
+#include"tarjeta.hpp"
+#include"fecha.hpp"
+#include"cadena.hpp"
+class Tarjeta;
+class Clave;
 class Usuario{
 	public:
-		Usuario(Cadena&,Cadena&,Cadena&,Cadena&);
+		Usuario(Cadena&,Cadena&,Cadena&,Cadena&,char*);
+		Cadena&id()const;
+		Cadena&nombre()const;
+		Cadena&apellidos()const;
+		Cadena&direccion()const;
 	private:
-		typedef std::unordered_map<Articulo*, unsigned int> Articulos;
-		typedef std::map<Numero, Tarjeta*> Tarjetas;
-		Cadena& iden;
-		Cadena& nombre;
-		Cadena& apellido;
-		Cadena& direccion;
-		const Clave& clave;
-		Articulos arti;
-		Tarjetas tarj;
+		static std::unordered_set<Cadena>UserLooser;
+		std::unordered_map<Articulo*, unsigned int> Articulos;
+		std::map<Numero, Tarjeta*> Tarjetas;
+		Cadena& iden_;
+		Cadena& nombre_;
+		Cadena& apellido_;
+		Cadena& direccion_;
+		const Clave& clave_;
 };
+
+
+
+//Subclase Clave
 class Clave{
 	public:
-		const static enum Razon{CORTA,ERROR_CRYPT};
+		enum Razon{CORTA,ERROR_CRYPT};
 		Clave(const char*);
-		const char* clave();
+		char* clave()const;
 		bool verifica(const char*);
 		
 		
 		class Incorrecta{
 			public:
-				Clave::Razon razon()const;
+				Razon razon()const;
 			private:
-				Clave::Razon causa;
+				Razon causa;
 		};
 	private:
-		char*clave;
+		static const char* CrB;
+		char*claveC_;
 };
-
