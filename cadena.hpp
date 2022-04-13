@@ -1,3 +1,5 @@
+#ifndef __cadena__
+#define __cadena__
 #include <string.h>
 #include <iterator>
 #include <iostream>//Temporal y solo para testeo
@@ -68,3 +70,4 @@ return res; // Devolvemos el hash del string
 }
 };
 }
+#endif
