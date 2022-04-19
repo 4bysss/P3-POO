@@ -10,13 +10,13 @@
 #include"fecha.hpp"
 #include"cadena.hpp"
 
-class Usuario;
 class Numero;
+class Usuario;
 static const char* enum_name[]={ "Otro", "VISA", "Mastercard", "Maestro", "JCB", "AmericanExpress"};
 class Tarjeta{
 	public:
 		enum Tipo{Otro,VISA,Mastercard,Maestro,JCB,AmericanExpress};
-		Tarjeta(Numero& num,Usuario*,Fecha&);
+		Tarjeta(const Numero& num,Usuario&,const Fecha&);
 		Tarjeta(Tarjeta&) = delete;
 		Tarjeta& operator=(Tarjeta&) = delete;
 		Tipo tipo()const;
@@ -25,17 +25,16 @@ class Tarjeta{
 		const Fecha& caducidad()const{ return cadu;};
 		const bool activa()const {return acti;};
 		bool activa(bool t=true);
-		void anular_titular();
 		friend bool operator<(const Tarjeta&,const Tarjeta&);
-
+		~Tarjeta();
 		//Clase excepcion para tarjetas caducadas
 		class Caducada{
 			public:
 				
-				Caducada(Fecha&fech):cuand(fech){};
-				Fecha& cuando(){return cuand;};
+				Caducada(const Fecha&fech):cuand(fech){};
+				const Fecha& cuando(){return cuand;};
 			private:
-				Fecha& cuand;
+				const Fecha& cuand;
 		};
 		//Clase excepcion para tarjetas duplicadas
 		class Num_duplicado{
@@ -48,17 +47,20 @@ class Tarjeta{
 		class Desactivada{};
 
 	private:
+		static std::set<Numero*> T_Tarjs;
+		friend class Usuario;
 		const Numero& num;
 		const Usuario* titu;
 		const Fecha& cadu;
 		bool acti;
+		void anular_titular();
 };
 
 //Subclase Numero 
 
 class Numero{
 	public:
-		explicit Numero(Cadena&);
+		Numero(const Cadena&);
 		enum Razon{LONGITUD,DIGITOS,NO_VALIDO};
 		operator const char*() const;
 		friend bool operator<(const Numero&,const Numero&);
@@ -70,7 +72,7 @@ class Numero{
 				Numero::Razon raz;
 		};
 	private:
-		Cadena& troq;
+		Cadena troq;
 };
 
 

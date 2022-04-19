@@ -5,31 +5,56 @@
 #include<unordered_set>
 #include<unordered_map>
 #include<unistd.h>
+#include<iterator>
 #include"articulo.hpp"
 #include"tarjeta.hpp"
 #include"fecha.hpp"
 #include"cadena.hpp"
 class Tarjeta;
 class Clave;
+class Numero;
+typedef std::unordered_map<Articulo*, unsigned int> Articulos;
+typedef std::map<Numero, Tarjeta*> Tarjetas;
 class Usuario{
 	public:
-		Usuario(Cadena&,Cadena&,Cadena&,Cadena&,char*);
-		Cadena&id()const;
-		Cadena&nombre()const;
-		Cadena&apellidos()const;
-		Cadena&direccion()const;
+		explicit Usuario(const Cadena&,const Cadena&,const Cadena&, const Cadena&,const Clave&);
+		const Cadena&id()const;
+		const Cadena&nombre()const;
+		const Cadena&apellidos()const;
+		const Cadena&direccion()const;
+		Articulos compra()const;
+		Tarjetas tarjetas()const;
+		Usuario&operator=(const Usuario&) = delete;
+		Usuario(const Usuario&) = delete;
+		void es_titular_de(Tarjeta&)const;
+		void no_es_titular_de(Tarjeta&)const;
+		void compra(Articulo&,int cant = 1)const;
+		int n_articulos()const;
+		friend std::ostream& operator<<(std::ostream& os, const Usuario&);
+		friend std::ostream& mostrar_carro(std::ostream&,Usuario&sus);
+		
+		class Id_duplicado{
+			public:
+				Id_duplicado(const Cadena&dup):dupi(dup){};
+				const Cadena&idd(){return dupi;};
+			private:
+				const Cadena& dupi;
+		};
+		~Usuario();
 	private:
+		friend class Tarjeta;
 		static std::unordered_set<Cadena>UserLooser;
-		std::unordered_map<Articulo*, unsigned int> Articulos;
-		std::map<Numero, Tarjeta*> Tarjetas;
-		Cadena& iden_;
-		Cadena& nombre_;
-		Cadena& apellido_;
-		Cadena& direccion_;
+		mutable Articulos Artis;
+		mutable Tarjetas Tarjs;
+		const Cadena& iden_;
+		const Cadena& nombre_;
+		const Cadena& apellido_;
+		const Cadena& direccion_;
 		const Clave& clave_;
 };
 
-
+std::ostream& mostrar_carro(std::ostream&,Usuario&sus);
+std::ostream& operator<<(std::ostream& os, const Usuario&);
 
 //Subclase Clave
 class Clave{
@@ -41,6 +66,7 @@ class Clave{
 		
 		
 		class Incorrecta{
+			Incorrecta(Razon&r):causa(r){};
 			public:
 				Razon razon()const;
 			private:
@@ -48,5 +74,6 @@ class Clave{
 		};
 	private:
 		static const char* CrB;
-		char*claveC_;
+		const char*claveC_;
 };
+#endif

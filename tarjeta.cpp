@@ -5,8 +5,9 @@ time_t t=time(nullptr);
 struct tm* conv2=localtime(&t);
 char output[20];
 //Constructores 
-Tarjeta::Tarjeta(Numero& nume,Usuario* ussr,Fecha&fecha__):num(nume),titu(ussr),cadu(fecha__),acti(true){
+Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha&fecha__):num(nume),cadu(fecha__),acti(true){
 	Fecha hoy;
+	titu = &ussr;
 	if(fecha__<hoy){
 		throw Tarjeta::Caducada(fecha__);
 	}
@@ -74,14 +75,16 @@ void Tarjeta::anular_titular(){
 }
 
 
-
+Tarjeta::~Tarjeta(){
+	titu->no_es_titular_de(*this);
+}
 //=========================
 
 
 
 //Constructor de numero
-Numero::Numero(Cadena& c):troq(c){
-	char* troquelador;
+Numero::Numero(const Cadena& c){
+	char* troquelador=nullptr;
 	int j=0;
 
 	for(Cadena::iterator i=c.begin();i<c.end();i++){
@@ -102,6 +105,8 @@ Numero::Numero(Cadena& c):troq(c){
 	if(!luhn(troquelador)){
 		throw Numero::Incorrecto(NO_VALIDO);
 	}
+
+	troq= troquelador;
 }
 
 

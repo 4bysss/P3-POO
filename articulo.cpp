@@ -4,5 +4,11 @@
 const Cadena& Articulo::referencia()const{return CodRef;}
 const Cadena& Articulo::titulo()const{return Titu;}
 const Fecha& Articulo::f_publi()const{return FPubli;}
-int Articulo::precio()const{return price;}
+float Articulo::precio()const{return price;}
 int Articulo::stock()const{return stock_;}
+float& Articulo::precio(){return price;}
+int& Articulo::stock(){return stock_;}
+std::ostream& operator<<(std::ostream&on,Articulo&ar){
+	on<<'['<<ar.referencia()<<"] "<<'"'<<ar.titulo()<<'"'<<','<<ar.f_publi().anno()<<'.'<<ar.precio()<<" €";
+	return on;
+}
