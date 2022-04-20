@@ -1,8 +1,8 @@
 #include "tarjeta.hpp"
-#include "luhn.cpp"
+#include "../luhn.hpp"
 #include <ctime>
-time_t t=time(nullptr);
-struct tm* conv2=localtime(&t);
+time_t taim=time(nullptr);
+struct tm* conv2=localtime(&taim);
 char output[20];
 //Constructores 
 Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha&fecha__):num(nume),cadu(fecha__),acti(true){
@@ -94,16 +94,16 @@ Numero::Numero(const Cadena& c){
 				j++;
 			}
 			else{
-				throw Numero::Incorrecto(DIGITOS);
+				throw Incorrecto(DIGITOS);
 				
 			}
 		}
 	}
 	if(strlen(troquelador)<13||strlen(troquelador)>19){
-		throw Numero::Incorrecto(LONGITUD);
+		throw Incorrecto(LONGITUD);
 	}
 	if(!luhn(troquelador)){
-		throw Numero::Incorrecto(NO_VALIDO);
+		throw Incorrecto(NO_VALIDO);
 	}
 
 	troq= troquelador;

@@ -1,6 +1,5 @@
 #include "usuario.hpp"
 #include <cstdlib>
-const char* CrB = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
 
 //Constructor
 Usuario::Usuario(const Cadena& id,const Cadena&name,const Cadena&SName,const Cadena&dir,const Clave&key):iden_(id),nombre_(name),apellido_(SName),direccion_(dir),clave_(key){

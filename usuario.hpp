@@ -15,6 +15,8 @@ class Clave;
 class Numero;
 typedef std::unordered_map<Articulo*, unsigned int> Articulos;
 typedef std::map<Numero, Tarjeta*> Tarjetas;
+static std::unordered_set<Cadena>UserLooser;
+static const char* CrB = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
 class Usuario{
 	public:
 		explicit Usuario(const Cadena&,const Cadena&,const Cadena&, const Cadena&,const Clave&);
@@ -43,7 +45,6 @@ class Usuario{
 		~Usuario();
 	private:
 		friend class Tarjeta;
-		static std::unordered_set<Cadena>UserLooser;
 		mutable Articulos Artis;
 		mutable Tarjetas Tarjs;
 		const Cadena& iden_;
@@ -68,12 +69,11 @@ class Clave{
 		class Incorrecta{
 			Incorrecta(Razon&r):causa(r){};
 			public:
-				Razon razon()const;
+				Razon razon()const{return causa;};
 			private:
 				Razon causa;
 		};
 	private:
-		static const char* CrB;
 		const char*claveC_;
 };
 #endif

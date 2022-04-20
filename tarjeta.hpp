@@ -7,11 +7,11 @@
 #include<unordered_map>
 #include<ctype.h>
 #include"articulo.hpp"
-#include"fecha.hpp"
 #include"cadena.hpp"
-
+#include"fecha.hpp"
 class Numero;
 class Usuario;
+class Incorrecto;
 static const char* enum_name[]={ "Otro", "VISA", "Mastercard", "Maestro", "JCB", "AmericanExpress"};
 class Tarjeta{
 	public:
@@ -66,8 +66,8 @@ class Numero{
 		friend bool operator<(const Numero&,const Numero&);
 		class Incorrecto{
 			public:
-				Incorrecto(Numero::Razon r);
-				Numero::Razon& razon();
+				Incorrecto(Razon r):raz(r){};
+				Razon razon(){return raz;};
 			private:
 				Numero::Razon raz;
 		};

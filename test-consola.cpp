@@ -43,8 +43,9 @@ protected:
 
 int main()
 {
+  std::cout<<"Hola"; 
   cout.imbue(std::locale(std::locale("es_ES.UTF-8"), new sin_separador()));
-  
+  std::cout<<"Hola"; 
   /******** USUARIOS ************/
   // Constructor de usuario: id, nombre, apellidos, dirección, clave
   Usuario 
@@ -57,6 +58,7 @@ int main()
     yessi("yessi", "Yesica", "Minglanilla",
 	  "Calle del Almendro, 345 (Corrubedo)", "Roh9aa5v");
 
+  std::cout<<"Hola"; 
   /******** TARJETAS *************/
   // Constructor de Tarjeta: Numero, Usuario, fecha de caducidad
   // Para evitar problemas con las fechas y sus caducidades, ponemos año 0
