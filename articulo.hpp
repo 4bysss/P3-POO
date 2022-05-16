@@ -14,9 +14,9 @@ class Articulo{
 		float& precio();
 		int& stock();
 	private:
-		const Cadena& CodRef;
-		const Cadena& Titu;
-		const Fecha& FPubli;
+		const Cadena CodRef;
+		const Cadena Titu;
+		const Fecha FPubli;
 		float price;
 		int stock_;
 };

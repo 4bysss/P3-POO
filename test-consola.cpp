@@ -73,6 +73,7 @@ int main()
     visa2(Numero(" 4222222222222"), lucas, Fecha("28/2/0") + 365);
 
   // Pruebas de titularidad de tarjeta
+  std::cout<<visa1.caducidad();
   yessi.no_es_titular_de(jcb);	// Se le quita la Tarjeta jcb a Yessi.
   lucas.es_titular_de(jcb);	// No debe hacer nada.
   yessi.es_titular_de(jcb);	// Tampoco hace nada ya, solo se puede

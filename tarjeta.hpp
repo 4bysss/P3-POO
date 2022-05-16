@@ -9,16 +9,31 @@
 #include"articulo.hpp"
 #include"cadena.hpp"
 #include"fecha.hpp"
-class Numero;
 class Usuario;
 class Incorrecto;
 static const char* enum_name[]={ "Otro", "VISA", "Mastercard", "Maestro", "JCB", "AmericanExpress"};
+class Numero{
+	public:
+		Numero(const Cadena&);
+		enum Razon{LONGITUD,DIGITOS,NO_VALIDO};
+		operator const char*() const;
+		friend bool operator<(const Numero&,const Numero&);
+		class Incorrecto{
+			public:
+				Incorrecto(Razon r):raz(r){};
+				Razon razon()const{return raz;};
+			private:
+				Numero::Razon raz;
+		};
+	private:
+		Cadena troq;
+};
 class Tarjeta{
 	public:
 		enum Tipo{Otro,VISA,Mastercard,Maestro,JCB,AmericanExpress};
-		Tarjeta(const Numero& num,Usuario&,const Fecha&);
-		Tarjeta(Tarjeta&) = delete;
-		Tarjeta& operator=(Tarjeta&) = delete;
+		Tarjeta(const Numero& ,Usuario&,const Fecha&);
+		Tarjeta(const Tarjeta&) = delete;
+		Tarjeta& operator=(const Tarjeta&) = delete;
 		Tipo tipo()const;
 		const Numero& numero()const { return num;};
 		const Usuario* titular()const{ return titu;};
@@ -32,7 +47,7 @@ class Tarjeta{
 			public:
 				
 				Caducada(const Fecha&fech):cuand(fech){};
-				const Fecha& cuando(){return cuand;};
+				const Fecha& cuando()const{return cuand;};
 			private:
 				const Fecha& cuand;
 		};
@@ -40,40 +55,25 @@ class Tarjeta{
 		class Num_duplicado{
 			public:
 				Num_duplicado(Numero& n):dup(n){};
-				Numero&que();
+				const Numero& que()const{return dup;};
 			private:
-				Numero&dup;
+				const Numero& dup;
 		};
+		//Clase de excepcion a futuro
 		class Desactivada{};
 
 	private:
-		static std::set<Numero*> T_Tarjs;
 		friend class Usuario;
 		const Numero& num;
 		const Usuario* titu;
-		const Fecha& cadu;
+		const Fecha cadu;
 		bool acti;
 		void anular_titular();
 };
 
 //Subclase Numero 
 
-class Numero{
-	public:
-		Numero(const Cadena&);
-		enum Razon{LONGITUD,DIGITOS,NO_VALIDO};
-		operator const char*() const;
-		friend bool operator<(const Numero&,const Numero&);
-		class Incorrecto{
-			public:
-				Incorrecto(Razon r):raz(r){};
-				Razon razon(){return raz;};
-			private:
-				Numero::Razon raz;
-		};
-	private:
-		Cadena troq;
-};
+
 
 
 //Metodos externos de Numero 
@@ -82,5 +82,5 @@ bool operator<(const Numero&,const Numero&);
 
 //Metodos externos de Tarjeta 
 bool operator<(const Tarjeta&,const Tarjeta&);
-std::ostream& operator<<(std::ostream&,Tarjeta&);
+std::ostream& operator<<(std::ostream&,const Tarjeta&);
 #endif

@@ -1,13 +1,13 @@
 #include "tarjeta.hpp"
-#include "../luhn.hpp"
 #include <ctime>
 time_t taim=time(nullptr);
 struct tm* conv2=localtime(&taim);
 char output[20];
+bool luhn (const Cadena&);
 //Constructores 
-Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha&fecha__):num(nume),cadu(fecha__),acti(true){
+Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha& fecha__):num(nume),titu(&ussr),cadu(fecha__),acti(true){
 	Fecha hoy;
-	titu = &ussr;
+	
 	if(fecha__<hoy){
 		throw Tarjeta::Caducada(fecha__);
 	}
@@ -20,17 +20,17 @@ Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha&fecha__):num(nume)
 
 //Metodo tipo
 Tarjeta::Tipo Tarjeta::tipo()const{
-	if (num[0]==3){
-		if(num[1]==4||num[1]==7){
+	if (num[0]=='3'){
+		if(num[1]=='4'||num[1]=='7'){
 			return AmericanExpress;
 		}
 		else{
 			return JCB;
 		}
 	}
-	else if(num[0]==4){return VISA;}
-	else if(num[0]==5){return Mastercard;}
-	else if(num[0]==6){return Maestro;}
+	else if(num[0]=='4'){return VISA;}
+	else if(num[0]=='5'){return Mastercard;}
+	else if(num[0]=='6'){return Maestro;}
 	else {return Otro;}
 }
 
@@ -45,15 +45,28 @@ bool operator<(const Tarjeta&T1, const Tarjeta&T2){
 
 
 //Operador de extraccion
-std::ostream& operator<<(std::ostream&on,const Tarjeta&T){
+std::ostream& operator<<(std::ostream&on,const Tarjeta&Tar){
+	const char* Nom = Tar.titular()->nombre().c_str();
+	const char* Nom2 = Tar.titular()->apellidos().c_str();
+	char Name[strlen(Nom)];
+	char Ape[strlen(Nom2)];
+	strcpy(Name,Nom);
+	strcpy(Ape,Nom2);
+	for (int i=0;i<strlen(Nom);i++){
+		Name[i] = (char) toupper(Name[i]);
+	}
+	
+	for (int i=0;i<strlen(Nom2);i++){
+		Ape[i] = (char) toupper(Ape[i]);
+	}
 	setlocale(LC_ALL, "es_ES.UTF-8");
-	Fecha fech = T.caducidad();
+	Fecha fech = Tar.caducidad();
 	conv2->tm_year= fech.anno()- 1900;
 	conv2->tm_mon=fech.mes()-1;
 	conv2->tm_mday=fech.dia();
 	mktime(conv2);
 	std::strftime (output,80,"%m/%y" ,conv2);
-	on<<enum_name[T.tipo()]<<'\n'<<T.numero()<<'\n'<<T.titular()<<'\n'<<"Caduca: "<<output<<'\n';
+	on<<enum_name[Tar.tipo()]<<'\n'<<Tar.numero()<<'\n'<<Name<<" "<<Ape<<'\n'<<"Caduca: "<<output<<'\n';
 	return on;
 }
 
@@ -76,7 +89,9 @@ void Tarjeta::anular_titular(){
 
 
 Tarjeta::~Tarjeta(){
-	titu->no_es_titular_de(*this);
+	if(titu!=nullptr){
+		titu->no_es_titular_de(*this);
+	}
 }
 //=========================
 
@@ -84,11 +99,11 @@ Tarjeta::~Tarjeta(){
 
 //Constructor de numero
 Numero::Numero(const Cadena& c){
-	char* troquelador=nullptr;
+	char troquelador[50]={'\0'};
 	int j=0;
 
 	for(Cadena::iterator i=c.begin();i<c.end();i++){
-		if(*i!=' '){
+		if(!isspace(*i)){
 			if(isdigit(*i)){
 				troquelador[j]=*i;
 				j++;
