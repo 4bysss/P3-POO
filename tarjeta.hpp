@@ -60,7 +60,10 @@ class Tarjeta{
 				const Numero& dup;
 		};
 		//Clase de excepcion a futuro
-		class Desactivada{};
+		class Desactivada{
+			public:
+				//desactivada();
+		};
 
 	private:
 		friend class Usuario;
