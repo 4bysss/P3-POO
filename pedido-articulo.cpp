@@ -21,6 +21,10 @@ Pedido_Articulo::Pedidos& Pedido_Articulo::ventas(Articulo&A){
   }
 }
 
+bool OrdenaPedidos::operator()(const Pedido *p1, const Pedido *p2)const{
+  return (p1->numero()<p2->numero());
+}
+
 std::ostream& Pedido_Articulo::mostrarDetallePedidos(std::ostream&on)const{
   double total = 0;
   for(auto iter:PedArt){
@@ -29,7 +33,8 @@ std::ostream& Pedido_Articulo::mostrarDetallePedidos(std::ostream&on)const{
     on<<"Cliente: "<<iter.first->tarjeta()->titular()->nombre()<<"Fecha: "<<iter.first->fecha()<<"\n";
 
   }
-  on<<"TOTAL VENTAS: "<<total;
+  on<<"TOTAL VENTAS: "<<std::fixed<<std::setprecision(2)<<total;
+  return on;
 }
 
 std::ostream& Pedido_Articulo::mostrarVentasArticulos(std::ostream&on)const{
@@ -72,7 +77,7 @@ std::ostream& operator<<(std::ostream&on,const std::map<Articulo*, LineaPedido, 
   return on;
 }
 
-std::ostream& operator<<(std::ostream&on,LineaPedido&Ln){
+std::ostream& operator<<(std::ostream&on,const LineaPedido&Ln){
   on<<std::fixed<<std::setprecision(2)<<Ln.precio_venta()<<" €\t"<<Ln.cantidad();
   return on;
 }

@@ -17,7 +17,7 @@ class LineaPedido{
     double PVP;
     int canti;
 };
-std::ostream& operator<<(std::ostream&,LineaPedido&);
+std::ostream& operator<<(std::ostream&,const LineaPedido&);
 
 class OrdenaPedidos:public std::binary_function<Pedido*,Pedido*,bool>{
   public:
@@ -44,6 +44,6 @@ class Pedido_Articulo{
     std::map<Articulo*, Pedidos, OrdenaArticulos> ArtPed;
 };
 std::ostream& operator<<(std::ostream&,const std::map<Pedido*, LineaPedido, OrdenaPedidos>&  );
-std::ostream& operator<<(std::ostream&,std::map<Articulo*, LineaPedido, OrdenaArticulos>&);
+std::ostream& operator<<(std::ostream&,const std::map<Articulo*, LineaPedido, OrdenaArticulos>&);
 
 #endif

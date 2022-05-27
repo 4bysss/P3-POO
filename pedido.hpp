@@ -11,11 +11,11 @@ class Pedido{
   public:
     Pedido(Usuario_Pedido&PU,Pedido_Articulo&PA,Usuario&U,const Tarjeta&T,const Fecha&F=Fecha());
     Pedido(Pedido&)=delete;
-    const unsigned numero(){return num_ped;}
-    const double total(){return imporT;}
-    const Fecha* fecha(){return dia;}
+    const unsigned numero()const{return num_ped;}
+    const double total()const{return imporT;}
+    const Fecha& fecha()const{return dia;}
     static unsigned n_total_pedidos(){return todoP;}
-    const Tarjeta* tarjeta(){return tarj;}
+    const Tarjeta* tarjeta()const{return tarj;}
     //Clases excepcion
     class Vacio{
       public:
@@ -45,7 +45,7 @@ class Pedido{
     double imporT;
     unsigned cantP;
     const Tarjeta* tarj;
-    const Fecha* dia;
+    const Fecha dia;
 
 };
 std::ostream& operator<<(std::ostream& os, const Pedido& p);
