@@ -11,7 +11,7 @@ void Pedido_Articulo::pedir(Articulo&A,Pedido&P,double C,unsigned cant){
   ArtPed[&A].insert(std::make_pair(&P,LineaPedido(C,cant)));
 }
 
-Pedido_Articulo::Pedidos& Pedido_Articulo::ventas(Articulo&A){
+const Pedido_Articulo::Pedidos& Pedido_Articulo::ventas(Articulo&A)const{
   if(ArtPed.find(&A)!=ArtPed.end()){
     return ArtPed.find(&A)->second;
   }
@@ -25,22 +25,11 @@ bool OrdenaPedidos::operator()(const Pedido *p1, const Pedido *p2)const{
   return (p1->numero()<p2->numero());
 }
 
-std::ostream& Pedido_Articulo::mostrarDetallePedidos(std::ostream&on)const{
-  double total = 0;
-  for(auto iter:PedArt){
-    total+=iter.first->total();
-    on<<"Pedído Núm. "<<iter.first->numero()<<"\n";
-    on<<"Cliente: "<<iter.first->tarjeta()->titular()->nombre()<<"Fecha: "<<iter.first->fecha()<<"\n";
-
-  }
-  on<<"TOTAL VENTAS: "<<std::fixed<<std::setprecision(2)<<total;
-  return on;
-}
-
 std::ostream& Pedido_Articulo::mostrarVentasArticulos(std::ostream&on)const{
   double total = 0;
   for(auto&iter:ArtPed){
     on<<"Ventas de ["<<iter.first->referencia()<<"] "<<iter.first->titulo()<<"\n";
+    on<<ventas(*iter.first)<<"\n";
     on<<iter.second<<"\n";
   }
   return on;
@@ -55,9 +44,9 @@ std::ostream& operator<<(std::ostream&on,const std::map<Pedido*,LineaPedido,Orde
   on<<"=============================\n";
   for(auto& iter:P){
     totalart+=iter.second.cantidad();
-    total = iter.second.precio_venta() * iter.second.cantidad();
+    total += iter.second.precio_venta() * iter.second.cantidad();
     on<<std::fixed<<std::setprecision(2);
-    on<<iter.second.precio_venta()<<" €"<<iter.second.cantidad()<<"          "<<iter.first->fecha();
+    on<<iter.second.precio_venta()*iter.second.cantidad()<<" € "<<iter.second.cantidad()<<"          "<<iter.first->fecha();
   }
   on<<"=============================\n";
   on<<total<<" €        "<<totalart;
@@ -81,3 +70,17 @@ std::ostream& operator<<(std::ostream&on,const LineaPedido&Ln){
   on<<std::fixed<<std::setprecision(2)<<Ln.precio_venta()<<" €\t"<<Ln.cantidad();
   return on;
 }
+
+std::ostream& Pedido_Articulo::mostrarDetallePedidos(std::ostream&on)const{
+  double total = 0;
+  for(auto iter:PedArt){
+    total+=iter.first->total();
+    on<<"Pedído Núm. "<<iter.first->numero()<<"\n";
+    on<<"Cliente: "<<iter.first->tarjeta()->titular()->nombre()<<"Fecha: "<<iter.first->fecha()<<"\n";
+    on<<detalle(*iter.first)<<"\n";
+
+  }
+  on<<"TOTAL VENTAS: "<<std::fixed<<std::setprecision(2)<<total<<" €";
+  return on;
+}
+

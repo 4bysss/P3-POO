@@ -33,10 +33,10 @@ class Pedido_Articulo{
     std::ostream& mostrarDetallePedidos(std::ostream&on)const;
     typedef std::map<Articulo*, LineaPedido, OrdenaArticulos> ItemsPedido;
     typedef std::map<Pedido*, LineaPedido, OrdenaPedidos> Pedidos;
-    const ItemsPedido& detalle(Pedido&P){return PedArt.find(&P)->second;}
+    const ItemsPedido& detalle(Pedido&P)const{return PedArt.find(&P)->second;}
     void pedir(Pedido&P,Articulo&A,double C,unsigned cant=1);
     void pedir(Articulo&A,Pedido&P,double C,unsigned cant=1);
-    Pedidos& ventas(Articulo&A);
+    const Pedidos& ventas(Articulo&A)const;
 
 
   private:

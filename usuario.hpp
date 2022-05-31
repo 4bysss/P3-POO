@@ -45,7 +45,7 @@ class Usuario{
 		const Cadena&nombre()const;
 		const Cadena&apellidos()const;
 		const Cadena&direccion()const;
-		Articulos compra()const;
+		Articulos& compra()const;
 		Tarjetas& tarjetas()const;
 		Usuario&operator=(const Usuario&) = delete;
 		Usuario(const Usuario&) = delete;

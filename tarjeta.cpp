@@ -11,6 +11,9 @@ Tarjeta::Tarjeta(const Numero& nume,Usuario& ussr,const Fecha& fecha__):num(nume
 	if(fecha__<hoy){
 		throw Tarjeta::Caducada(fecha__);
 	}
+	if(!TNums.insert(num).second){
+		throw Num_duplicado(nume);
+	}
 	else{
 		ussr.es_titular_de(*this);
 	}
@@ -72,7 +75,10 @@ std::ostream& operator<<(std::ostream&on,const Tarjeta&Tar){
 
 
 
-
+std::ostream& operator<<(std::ostream&on,const Tarjeta::Tipo t){
+	on<<enum_name[t];
+	return on;
+}
 //Metodo de activacion
 bool Tarjeta::activa(bool t){
 	acti = t;
@@ -89,6 +95,7 @@ void Tarjeta::anular_titular(){
 
 
 Tarjeta::~Tarjeta(){
+	TNums.erase(num);
 	if(titu!=nullptr){
 		titu->no_es_titular_de(*this);
 	}

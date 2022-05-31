@@ -11,7 +11,10 @@
 #include"fecha.hpp"
 class Usuario;
 class Incorrecto;
-static const char* enum_name[]={ "Otro", "VISA", "Mastercard", "Maestro", "JCB", "AmericanExpress"};
+static const char* enum_name[]={ "Tipo indeterminado", "VISA", "Mastercard", "Maestro", "JCB", "AmericanExpress"};
+class Numero;
+static std::set<Numero> TNums;
+
 class Numero{
 	public:
 		Numero(const Cadena&);
@@ -39,7 +42,7 @@ class Tarjeta{
 		const Usuario* titular()const{ return titu;};
 		const Fecha& caducidad()const{ return cadu;};
 		const bool activa()const {return acti;};
-		bool activa(bool t=true);
+		bool activa(bool t);
 		friend bool operator<(const Tarjeta&,const Tarjeta&);
 		~Tarjeta();
 		//Clase excepcion para tarjetas caducadas
@@ -54,7 +57,7 @@ class Tarjeta{
 		//Clase excepcion para tarjetas duplicadas
 		class Num_duplicado{
 			public:
-				Num_duplicado(Numero& n):dup(n){};
+				Num_duplicado(const Numero& n):dup(n){};
 				const Numero& que()const{return dup;};
 			private:
 				const Numero& dup;
@@ -86,4 +89,5 @@ bool operator<(const Numero&,const Numero&);
 //Metodos externos de Tarjeta 
 bool operator<(const Tarjeta&,const Tarjeta&);
 std::ostream& operator<<(std::ostream&,const Tarjeta&);
+std::ostream& operator<<(std::ostream&,const Tarjeta::Tipo);
 #endif

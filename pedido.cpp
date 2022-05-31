@@ -15,10 +15,9 @@ Pedido::Pedido(Usuario_Pedido&PU,Pedido_Articulo&PeA,Usuario&U,const Tarjeta&T,c
   double imporLP=0;
   for(auto&iter:U.compra()){
     if(iter.first->stock()<iter.second){
-      for (auto& iter2:U.compra()){
-        iter2.second = 0;
-      }
-      throw SinStock(iter.first);
+      Articulo& aux(*iter.first);
+      U.compra().clear();
+      throw SinStock(&aux);
     }
   }
 
@@ -35,9 +34,9 @@ Pedido::Pedido(Usuario_Pedido&PU,Pedido_Articulo&PeA,Usuario&U,const Tarjeta&T,c
 
 }
 std::ostream& operator<<(std::ostream&on,const Pedido&p){
-  on<<"Núm pedido: "<<p.numero()<<std::endl;
+  on<<"Núm. pedido: "<<p.numero()<<std::endl;
   on<<"             "<<"Fecha: "<<p.fecha()<<std::endl;
-  on<<"             "<<"Pagado con: "<<p.tarjeta()->tipo()<<"n.º:"<<p.tarjeta()->numero()<<std::endl;
+  on<<"             "<<"Pagado con: "<<p.tarjeta()->tipo()<<" n.º:"<<p.tarjeta()->numero()<<std::endl;
   on<<"             "<<"Importe: "<<std::fixed<<std::setprecision(2)<<p.total()<<" €"<<std::endl;
   return on;
 

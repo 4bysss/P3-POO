@@ -17,7 +17,7 @@ const Cadena& Usuario::id()const{return iden_;}
 const Cadena& Usuario::nombre()const{return nombre_;}
 const Cadena& Usuario::apellidos()const{return apellido_;}
 const Cadena& Usuario::direccion()const{return direccion_;}
-Articulos Usuario::compra()const{return Artis;}
+Articulos& Usuario::compra()const{return Artis;}
 Tarjetas& Usuario::tarjetas()const{return Tarjs;}
 
 

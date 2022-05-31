@@ -1,2 +1,2 @@
-tarjeta.o tarjeta.d : tarjeta.cpp tarjeta.hpp usuario.hpp articulo.hpp \
-  ../P1/cadena.hpp ../P1/fecha.hpp
+tarjeta.o tarjeta.d : tarjeta.cpp tarjeta.hpp usuario.hpp articulo.hpp cadena.hpp \
+  fecha.hpp
